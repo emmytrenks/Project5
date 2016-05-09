@@ -39,20 +39,29 @@ public:
 
 private:
   std::vector<T> & pre_order(std::vector<T> &v) {
+    //First, record the current node's value
     v.push_back(data);
+    //Second, recursively call pre_order on the left of the current node
     if (left != nullptr) left->pre_order(v);
+    //Third, recursively call pre_order on the right of the current node
     if (right != nullptr) right->pre_order(v);
   }
 
   std::vector<T> & in_order(std::vector<T> &v) {
+    //First, recursively call pre_order on the left of the current node
     if (left != nullptr) left->in_order(v);
+    //Second, record the current node's value
     v.push_back(data);
+    //Third, recursively call pre_order on the right of the current node
     if (right != nullptr) right->in_order(v);
   }
 
   std::vector<T> & post_order(std::vector<T> &v) {
+    //First, recursively call pre_order on the left of the current node
     if (left != nullptr) left->post_order(v);
+    //Second, recursively call pre_order on the right of the current node
     if (right != nullptr) right->post_order(v);
+    //Third, record the current node's value
     v.push_back(data);
   }
 };
