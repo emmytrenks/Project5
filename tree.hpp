@@ -142,6 +142,9 @@ public:
 
 private:
   BNode<T> * toBTree() {
+    //Converting a tree into a binary tree is simple; starting with root
+    //Left child = leftmost child
+    //Right child = right sibling
     if (this->root == nullptr) return nullptr;
     BNode<T> *root = new BNode<T>(this->root->data);
     bify(root, this->root);
@@ -149,10 +152,12 @@ private:
   }
 
   BNode<T> * bify(BNode<T> *bnode, Node<T> *node) {
+    //Set the left child to the node's leftmost child
     if (node->child != nullptr) {
       bnode->left = new BNode<T>(node->child->data);
       bify(bnode->left, node->child);
     }
+    //Set the right child to the node's right sibling
     if (node->sibling != nullptr) {
       bnode->right = new BNode<T>(node->sibling->data);
       bify(bnode->right, node->sibling);
