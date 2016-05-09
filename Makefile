@@ -1,4 +1,4 @@
-COMPILER=g++-5 --std=c++11
+COMPILER=g++ --std=c++11
 EXECUTABLES=test.out
 all:
 	make $(EXECUTABLES)
