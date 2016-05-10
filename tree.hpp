@@ -70,6 +70,18 @@ private:
 };
 
 template <class T>
+class TreeIterator {
+private:
+  std::vector<T> v;
+public:
+  TreeIterator(std::vector<T> v) : v(std::move(v)) { }
+
+  typename std::vector<T>::const_iterator begin() const { return v.cbegin(); }
+
+  typename std::vector<T>::const_iterator end() const { return v.cend(); }
+};
+
+template <class T>
 struct Node {
   T data;
   Node<T> *child = nullptr, *sibling = nullptr;
@@ -113,34 +125,34 @@ public:
     return n2;
   }
 
-  std::pair<typename std::vector<T>::const_iterator, typename std::vector<T>::const_iterator> pre_order() {
+  TreeIterator<T> pre_order() {
     std::vector<T> v;
     auto b = toBTree();
     if (b != nullptr) {
       v = b->pre_order();
       delete b;
     }
-    return std::move(std::make_pair(v.cbegin(), v.cend()));
+    return TreeIterator<T>(std::move(v));
   }
 
-  std::pair<typename std::vector<T>::const_iterator, typename std::vector<T>::const_iterator> in_order() {
+  TreeIterator<T> in_order() {
     std::vector<T> v;
     auto b = toBTree();
     if (b != nullptr) {
       v = b->in_order();
       delete b;
     }
-    return std::move(std::make_pair(v.cbegin(), v.cend()));
+    return TreeIterator<T>(std::move(v));
   }
 
-  std::pair<typename std::vector<T>::const_iterator, typename std::vector<T>::const_iterator> post_order() {
+  TreeIterator<T> post_order() {
     std::vector<T> v;
     auto b = toBTree();
     if (b != nullptr) {
       v = b->post_order();
       delete b;
     }
-    return std::move(std::make_pair(v.cbegin(), v.cend()));
+    return TreeIterator<T>(std::move(v));
   }
 
 private:

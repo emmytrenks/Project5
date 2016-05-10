@@ -8,16 +8,16 @@ int main(int argc, char **argv) {
   t.insert(n, 10);
   t.insert(n, 15);
   auto br = t.pre_order();
-  auto s = br.first;
-  for (; s != br.second; ++s) std::cout << *s << " ";
+  auto s = br.begin();
+  for (; s != br.end(); ++s) std::cout << *s << " ";
   std::cout << '\n';
   br = t.in_order();
-  s = br.first;
-  for (; s != br.second; ++s) std::cout << *s << " ";
+  s = br.begin();
+  for (; s != br.end(); ++s) std::cout << *s << " ";
   std::cout << '\n';
   br = t.post_order();
-  s = br.first;
-  for (; s != br.second; ++s) std::cout << *s << " ";
+  s = br.begin();
+  for (; s != br.end(); ++s) std::cout << *s << " ";
   std::cout << '\n';
   return 0;
 }
