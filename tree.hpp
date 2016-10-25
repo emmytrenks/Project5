@@ -5,71 +5,6 @@
 #include <memory>
 
 template <class T>
-class BNode {
-public:
-  BNode *left = nullptr, *right = nullptr;
-  T data;
-
-  BNode(const T &data) {
-    this->data = data;
-  }
-
-  ~BNode() {
-    if (left) delete left;
-    if (right) delete right;
-  }
-
-  std::vector<T> pre_order() {
-    std::vector<T> v;
-    pre_order(v);
-    return v;
-  }
-
-  std::vector<T> in_order() {
-    std::vector<T> v;
-    in_order(v);
-    return v;
-  }
-
-  std::vector<T> post_order() {
-    std::vector<T> v;
-    post_order(v);
-    return v;
-  }
-
-private:
-  std::vector<T> & pre_order(std::vector<T> &v) {
-    //First, record the current node's value
-    v.push_back(data);
-    //Second, recursively call pre_order on the left of the current node
-    if (left != nullptr) left->pre_order(v);
-    //Third, recursively call pre_order on the right of the current node
-    if (right != nullptr) right->pre_order(v);
-    return v;
-  }
-
-  std::vector<T> & in_order(std::vector<T> &v) {
-    //First, recursively call in_order on the left of the current node
-    if (left != nullptr) left->in_order(v);
-    //Second, record the current node's value
-    v.push_back(data);
-    //Third, recursively call in_order on the right of the current node
-    if (right != nullptr) right->in_order(v);
-    return v;
-  }
-
-  std::vector<T> & post_order(std::vector<T> &v) {
-    //First, recursively call post_order on the left of the current node
-    if (left != nullptr) left->post_order(v);
-    //Second, recursively call post_order on the right of the current node
-    if (right != nullptr) right->post_order(v);
-    //Third, record the current node's value
-    v.push_back(data);
-    return v;
-  }
-};
-
-template <class T>
 class TreeIterator {
 private:
   std::vector<T> v;
@@ -93,6 +28,36 @@ struct Node {
   ~Node() {
     delete child;
     delete sibling;
+  }
+
+  std::vector<T> & pre_order(std::vector<T> &v) {
+    //First, record the current node's value
+    v.push_back(data);
+    //Second, recursively call pre_order on the left of the current node
+    if (child != nullptr) child->pre_order(v);
+    //Third, recursively call pre_order on the right of the current node
+    if (sibling != nullptr) sibling->pre_order(v);
+    return v;
+  }
+
+  std::vector<T> & in_order(std::vector<T> &v) {
+    //First, recursively call in_order on the left of the current node
+    if (child != nullptr) child->in_order(v);
+    //Second, record the current node's value
+    v.push_back(data);
+    //Third, recursively call in_order on the right of the current node
+    if (sibling != nullptr) sibling->in_order(v);
+    return v;
+  }
+
+  std::vector<T> & post_order(std::vector<T> &v) {
+    //First, recursively call post_order on the left of the current node
+    if (child != nullptr) child->post_order(v);
+    //Second, recursively call post_order on the right of the current node
+    if (sibling != nullptr) sibling->post_order(v);
+    //Third, record the current node's value
+    v.push_back(data);
+    return v;
   }
 };
 
@@ -127,57 +92,26 @@ public:
 
   TreeIterator<T> pre_order() {
     std::vector<T> v;
-    auto b = toBTree();
-    if (b != nullptr) {
-      v = b->pre_order();
-      delete b;
+    if (root != nullptr) {
+      root->pre_order(v);
     }
     return TreeIterator<T>(std::move(v));
   }
 
   TreeIterator<T> in_order() {
     std::vector<T> v;
-    auto b = toBTree();
-    if (b != nullptr) {
-      v = b->in_order();
-      delete b;
+    if (root != nullptr) {
+      root->in_order(v);
     }
     return TreeIterator<T>(std::move(v));
   }
 
   TreeIterator<T> post_order() {
     std::vector<T> v;
-    auto b = toBTree();
-    if (b != nullptr) {
-      v = b->post_order();
-      delete b;
+    if (root != nullptr) {
+      root->post_order(v);
     }
     return TreeIterator<T>(std::move(v));
-  }
-
-private:
-  BNode<T> * toBTree() {
-    //Converting a tree into a binary tree is simple; starting with root
-    //Left child = leftmost child
-    //Right child = right sibling
-    if (this->root == nullptr) return nullptr;
-    BNode<T> *root = new BNode<T>(this->root->data);
-    bify(root, this->root);
-    return root;
-  }
-
-  BNode<T> * bify(BNode<T> *bnode, Node<T> *node) {
-    //Set the left child to the node's leftmost child
-    if (node->child != nullptr) {
-      bnode->left = new BNode<T>(node->child->data);
-      bify(bnode->left, node->child);
-    }
-    //Set the right child to the node's right sibling
-    if (node->sibling != nullptr) {
-      bnode->right = new BNode<T>(node->sibling->data);
-      bify(bnode->right, node->sibling);
-    }
-    return bnode;
   }
 };
 
